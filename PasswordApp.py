@@ -11,12 +11,17 @@ class PasswordApp(tk.Tk):
 
 		self.var = tk.StringVar()
 
-		self.entry = tk.Entry(self, width=200)
+		banimg = tk.PhotoImage(file="passbanner.gif")
+		self.banner = tk.Label(self, image=banimg)
+		self.banner.image = banimg
+
+		self.entry = tk.Entry(self, width=200, show='*', justify='center')
 		self.button = tk.Button(self, text="Check", command=self.CheckPassword)
-		self.label1 = tk.Label(self, text="none")
-		self.label2 = tk.Label(self, text="none")
-		self.label3 = tk.Label(self, text="none")
-		self.label4 = tk.Label(self, text="none")
+		self.label1 = tk.Label(self, text="none", bg="#ecf0f1")
+		self.label2 = tk.Label(self, text="none", bg="#ecf0f1")
+		self.label3 = tk.Label(self, text="none", bg="#ecf0f1")
+		self.label4 = tk.Label(self, text="none", bg="#ecf0f1")
+		self.banner.pack(padx=0, pady=2)
 		self.entry.pack()
 		self.button.pack()
 		self.label1.pack()
@@ -83,11 +88,20 @@ class PasswordApp(tk.Tk):
 		ChkPW = re.sub(r'[^\w]','',ChkPW)
 		print("ChkPW = " + ChkPW)
 
+		ChkPW = re.sub(r'\d+', '', ChkPW)
+
+		print(ChkPW)
+
+		
 
 		l = len(ChkPW)
 		x = 0
 		w = 0
 		d = enchant.Dict()
+
+		
+
+
 
 
 
@@ -118,10 +132,12 @@ class PasswordApp(tk.Tk):
 #End of Class
 
 def WinCreate(w):
-	w.geometry('600x400')
+	w.geometry('502x400')
 
 
 
 w = PasswordApp()
 WinCreate(w)
+w.configure(background = '#ecf0f1')
+w.title("Password App")
 w.mainloop()
