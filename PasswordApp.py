@@ -37,9 +37,9 @@ class PasswordApp(tk.Tk):
 				print(s)
 
 		if(s > 0):
-			self.label4.config(text = "Password contains symbols!")
+			self.label4.config(text = "\n Password contains symbols! \n")
 		else:
-			self.label4.config(text = "Password contains no Symbols!")
+			self.label4.config(text = "\n Password contains no Symbols! \n Please add a special character to your password some examples are \n !£@*%+")
 
 
 
@@ -52,9 +52,9 @@ class PasswordApp(tk.Tk):
 		y = len(pw)
 		print("Y is equal to " + str(y))
 		if(y < 8):
-			self.label2.config(text = "Password too short! Less than 8 characters!")
+			self.label2.config(text = "\n Password too short! Less than 8 characters! \n Please ensure that your supplied password \n is at least 8 characters or more in length.")
 		elif( y >= 8 ):
-			self.label2.config(text = "Password length ok! Password more than 8 characters!")
+			self.label2.config(text = "\n Password length ok! Password more than 8 characters! \n")
 		self.CheckForNumbers(pw)
 
 	def CheckForNumbers(self, pw):
@@ -65,9 +65,9 @@ class PasswordApp(tk.Tk):
 				num = num + 1
 
 		if(num > 0):
-			self.label3.config(text = "Password contains " + str(num) + " numbers!")
+			self.label3.config(text = "\n Password contains " + str(num) + " numbers! \n")
 		elif(num == 0):
-			self.label3.config(text = "Password does not contain any numbers!")
+			self.label3.config(text = "\n Password does not contain any numbers! \n")
 
 		self.CheckSymbols(pw)
 
@@ -103,7 +103,7 @@ class PasswordApp(tk.Tk):
 
 		if(w > 0):
 
-			self.label1.config(text= str(w) + " dictionary words found in password!")
+			self.label1.config(text= str(w) + " dictionary words found in password! \n Avoid using dictionary words within \n your password, try replacing letters with symbols.")
 		self.CheckLength(pw)
 
 
@@ -118,7 +118,7 @@ class PasswordApp(tk.Tk):
 #End of Class
 
 def WinCreate(w):
-	w.geometry('300x200')
+	w.geometry('600x400')
 
 
 
