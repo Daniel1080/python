@@ -92,14 +92,14 @@ class PasswordApp(tk.Tk):
 
 		print(ChkPW)
 
-		
+
 
 		l = len(ChkPW)
 		x = 0
 		w = 0
 		d = enchant.Dict()
 
-		
+
 
 
 
@@ -132,7 +132,7 @@ class PasswordApp(tk.Tk):
 #End of Class
 
 def WinCreate(w):
-	w.geometry('502x400')
+	w.geometry('502x460')
 
 
 
