@@ -24,30 +24,39 @@ class PasswordApp(tk.Tk):
 		self.progbarval = 0
 		#Defining gui elements and setting required properties. 
 		banimg = tk.PhotoImage(file="passbanner.gif")
+	
 		self.banner = tk.Label(self, image=banimg)
 		self.banner.image = banimg
-		
-
 		self.entry = tk.Entry(self, show='*', justify='center', font="Arial 8")
-		self.button = tk.Button(self, text="Check", command=self.CheckDictWord, font="Arial 6", bg = "#bdc3c7")
+		self.button = tk.Button(self, text="Check", command=self.CheckDictWord, font="Arial 7", bg = "#2980b9", fg="#ecf0f1")
 		self.sep1 = ttk.Separator(self, orient='horizontal')
 		self.label1 = tk.Label(self, text="-", bg="#ecf0f1", font="Arial 6", height=4)
+		self.sep2 = ttk.Separator(self, orient='horizontal')
 		self.label2 = tk.Label(self, text="-", bg="#ecf0f1", font="Arial 6", height=4)
+		self.sep3 = ttk.Separator(self, orient='horizontal')
 		self.label3 = tk.Label(self, text="-", bg="#ecf0f1", font="Arial 6", height=4)
+		self.sep4 = ttk.Separator(self, orient='horizontal')
 		self.label4 = tk.Label(self, text="-", bg="#ecf0f1", font="Arial 6", height=4)
-		self.pb = ttk.Progressbar(orient='horizontal', length=300, value=0.0, maximum=4, mode='determinate')
+		self.sep5 = ttk.Separator(self, orient='horizontal')
+		self.label5 = tk.Label(self, text="-", bg="#ecf0f1", font="Arial 6", height=4)
+		self.pb = ttk.Progressbar(orient='horizontal', length=300, value=0.0, maximum=5, mode='determinate')
 		self.proglbl = tk.Label(self, text="", bg="#ecf0f1", font="Arial 6")
 		self.lbltotal= tk.Label(self, text="", bg="#ecf0f1", font="Arial 6")
 
-		#Positioning of gui elements. 
+		#Positioning of gui elements. Using grid to position based on row and columns. 
 		self.banner.grid(row=0, columnspan=10, sticky='WE')
 		self.entry.grid(row=5, pady=2, columnspan=10, sticky='WE')
 		self.button.grid(row=10, columnspan=20, pady=3, padx=70, sticky='WE')
 		self.sep1.grid(row=15, sticky='WE', columnspan=10,padx=9)
 		self.label1.grid(row=20, sticky='WE', columnspan=10)
+		self.sep2.grid(row=25, sticky='WE', columnspan=10,padx=9)
 		self.label2.grid(row=30, sticky='WE', columnspan=10)
+		self.sep3.grid(row=35, sticky='WE', columnspan=10,padx=9)
 		self.label3.grid(row=40, sticky='WE', columnspan=10)
+		self.sep4.grid(row=45, sticky='WE', columnspan=10,padx=9)
 		self.label4.grid(row=50, sticky='WE', columnspan=10)
+		self.sep5.grid(row=55, sticky='WE', columnspan=10,padx=9)
+		self.label5.grid(row=60, sticky='WE', columnspan=10)
 		self.pb.grid(row = 100,  sticky='WE', pady=4, padx=4, columnspan=10)
 		self.proglbl.grid(row=110, sticky='WE', columnspan=10)
 		self.lbltotal.grid(row = 120, sticky='WE', columnspan=10)
@@ -55,8 +64,8 @@ class PasswordApp(tk.Tk):
 	def StepBar(self):
 		self.progbarval = self.progbarval +1
 		self.pb.step()
-		self.proglbl.config(text=str(self.progbarval)+"/4")
-		self.lbltotal.config(text="Selected password has met " + str(self.progbarval) + "\n out of 4 rules. ")
+		self.proglbl.config(text=str(self.progbarval)+"/5", fg="#7f8c8d" ,font="Arial 7 bold")
+		self.lbltotal.config(text="Selected password has met " + str(self.progbarval) + "\n out of 5 rules. ",fg="#7f8c8d", font="Arial 7 bold")
 # Encyrption Method. Used to encrypt password string. 
 	def Encrypt(self, cipher, pw):
 
@@ -73,15 +82,37 @@ class PasswordApp(tk.Tk):
 
 		for value in quoted.findall(plaintext):
 			plpw = value
-		print(plpw)
+		
 
 		return plpw
- 
+
+#Check password for capital and lower case letters. 
+	def CheckCaps(self, cipher, epw):
+		ciph4 = "hasdakdllsd"
+		pw = self.Decrypt(cipher, epw)
+		lower = []
+		upper= []
+#Check whether specified character is upper or lower case. 
+		for letter in pw:
+			if letter.islower:
+				lower.append(True)
+			if letter.isupper():
+				upper.append(True)
+
+		if lower.count(True) and upper.count(True) > 0:
+			self.label5.configure(text="Password contains bother upper and lower case letters." ,fg="#2ecc71")
+			self.StepBar()
+		else:
+			self.label5.configure(text="Password does not contain both lower and upper case letters. \n Ensure that both lower and upper case letters are used in password. ", fg="#e74c3c")
+
+		
+
 # Check Symbols method. Checks password for symbols. 
 	def CheckSymbols(self, cipher, epw):
+		ciph4="P@ss21"
 
 		pw = self.Decrypt(cipher, epw )
-
+		epw=""
 		s = 0
 		listsymb = ['!', '"', '£', '$', '%', '^', '&', '*', '(', ')', '-', '-', '{', '}', '[', ']', ',', '+']
 		length = len(listsymb)
@@ -91,14 +122,17 @@ class PasswordApp(tk.Tk):
 		for char in listsymb:
 			if (char in pw):
 				s = s + 1
-				print(s)
+				
 
 		if(s > 0):
-			self.label4.config(text = "Password contains symbols! \n")
+			self.label4.config(text = "Password contains symbols! \n", fg="#2ecc71")
 			self.StepBar()
 		else:
-			self.label4.config(text = "Password contains no Symbols! \n Please add a special character to your password some examples are \n !£@*%+")
+			self.label4.config(text = "Password contains no Symbols! \n Please add a special character to your password some examples are \n !£@*%+" ,fg="#e74c3c")
 
+		epw = self.Encrypt(ciph4, pw)
+
+		self.CheckCaps(ciph4, epw)
 #Check length method. Checks password is at least 8 characters in length. 
 	def CheckLength(self, cipher, epw):
 
@@ -106,11 +140,11 @@ class PasswordApp(tk.Tk):
 		pw = self.Decrypt(cipher, epw)
 
 		y = len(pw)
-		print("Y is equal to " + str(y))
+		
 		if(y < 8):
-			self.label2.config(text = "Password too short! Less than 8 characters! \n Please ensure that your supplied password \n is at least 8 characters or more in length.")
+			self.label2.config(text = "Password too short! Less than 8 characters! \n Please ensure that your supplied password \n is at least 8 characters or more in length.", fg="#e74c3c")
 		elif( y >= 8 ):
-			self.label2.config(text = "Password length ok! Password more than 8 characters! \n")
+			self.label2.config(text = "Password length ok! Password more than 8 characters! \n", fg="#2ecc71")
 			self.StepBar()
 
 		epw = self.Encrypt(ciph2, pw)
@@ -129,10 +163,10 @@ class PasswordApp(tk.Tk):
 				num = num + 1
 
 		if(num > 0):
-			self.label3.config(text = "Password contains " + str(num) + " numbers! \n")
+			self.label3.config(text = "Password contains " + str(num) + " numbers! \n" ,fg="#2ecc71")
 			self.StepBar()
 		elif(num == 0):
-			self.label3.config(text = "Password does not contain any numbers! \n")
+			self.label3.config(text = "Password does not contain any numbers! \n Add numbers to password!",fg="#e74c3c")
 
 		epw = self.Encrypt(ciph3, pw)
 		self.CheckSymbols(ciph3,epw)
@@ -141,29 +175,23 @@ class PasswordApp(tk.Tk):
 #Check for Dictionary Word Method. Checks password for dictionary words. 
 	def CheckDictWord(self):
 
+		self.progbarval = 0
+
 		cipher = "chkd"
 
-		print(self.entry.get())
 		pw = self.entry.get()
 
 		epw = self.Encrypt(cipher, pw)
 
 		pw=""
 
-		print(epw)
 
-
-		print(pw)
 		ChkPW = self.Decrypt(cipher, epw)
 
 		ChkPW = re.sub(r'[^\w]','',ChkPW)
-		print("ChkPW = " + ChkPW)
+		
 
 		ChkPW = re.sub(r'\d+', '', ChkPW)
-
-		print(ChkPW)
-
-
 
 		l = len(ChkPW)
 		x = 0
@@ -181,9 +209,9 @@ class PasswordApp(tk.Tk):
 
 		if(w > 0):
 
-			self.label1.config(text= str(w) + " dictionary words found in password! \n Avoid using dictionary words within \n your password, try replacing letters with symbols.")
+			self.label1.config(text= str(w) + " dictionary words found in password! \n Avoid using dictionary words within \n your password, try replacing letters with symbols.", fg="#e74c3c")
 		elif(w == 0):
-			self.label1.config(text= "0 dictionary words found in password!")
+			self.label1.config(text= "0 dictionary words found in password!", fg="#2ecc71")
 			self.StepBar()
 			
 	
@@ -193,14 +221,9 @@ class PasswordApp(tk.Tk):
 
 def WinCreate(w):
 
-	w.geometry('502x570')
+	w.geometry('502x670')
 	w.resizable(width=False, height=False)
 	
-	
-
-
-
-
 w = PasswordApp()
 WinCreate(w)
 w.configure(background = '#ecf0f1')
